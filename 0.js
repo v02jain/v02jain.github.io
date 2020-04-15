@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h3 class=\"text-align\">{{ (country$|async).Country }} {{ (country$|async).CountryCode }}</h3>\r\n<div class=\"row\">\r\n  <div class=\"col\">\r\n    <button type=\"button\" class=\"btn btn-primary\">\r\n      Total Cases <span class=\"badge badge-light\">{{ (country$|async).TotalConfirmed }}</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"col\">\r\n  <button  type=\"button\" class=\"btn btn-primary\">\r\n    Total Deaths <span class=\"badge badge-light\">{{ (country$|async).TotalDeaths }}</span>\r\n  </button>\r\n  </div>\r\n  <div class=\"col\">\r\n  <button  type=\"button\" class=\"btn btn-primary\">\r\n    Total Recovered <span class=\"badge badge-light\">{{ (country$|async).TotalRecovered }}</span>\r\n  </button>\r\n  </div>\r\n</div>\r\n\r\n<div class=\"text-align\">\r\n  <button routerLink=\"/dashboard\" type=\"button\" class=\"btn btn-info\">Back to dashboard</button>\r\n</div>"
+module.exports = "<h3 class=\"text-align\">\r\n  {{ (country$ | async)?.Country }} {{ (country$ | async)?.CountryCode }}\r\n</h3>\r\n<div class=\"container\">\r\n  <div class=\"row mb-3\">\r\n    <div class=\"col\">\r\n      <button type=\"button\" class=\"btn btn-primary\">\r\n        Total Cases\r\n        <span class=\"badge badge-light\">{{\r\n          (country$ | async)?.TotalConfirmed\r\n        }}</span>\r\n      </button>\r\n    </div>\r\n    <div class=\"col\">\r\n      <button type=\"button\" class=\"btn btn-danger\">\r\n        Total Deaths\r\n        <span class=\"badge badge-light\">{{\r\n          (country$ | async)?.TotalDeaths\r\n        }}</span>\r\n      </button>\r\n\r\n    </div>\r\n    <div class=\"col\">\r\n      <button type=\"button\" class=\"btn btn-success\">\r\n        Total Recovered\r\n        <span class=\"badge badge-light\">{{\r\n          (country$ | async)?.TotalRecovered\r\n        }}</span>\r\n      </button>\r\n\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col\">\r\n      <ul class=\"list-group row\" *ngFor=\"let case of countryDataConfirmedList$ | async\">\r\n        <li class=\"list-group-item\">\r\n          {{ case.Date | date }} - {{ case.Cases }}\r\n        </li>\r\n      </ul>\r\n    </div>\r\n    <div class=\"col\">\r\n      <ul class=\"list-group\" *ngFor=\"let case of countryDataDeadList$ | async\">\r\n        <li class=\"list-group-item\">\r\n          {{ case.Date | date }} - {{ case.Cases }}\r\n        </li>\r\n      </ul>\r\n    </div>\r\n    <div class=\"col\">\r\n      <ul class=\"list-group\" *ngFor=\"let case of countryDataRecoveredList$ | async\">\r\n        <li class=\"list-group-item\">\r\n          {{ case.Date | date }} - {{ case.Cases }}\r\n        </li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n  <br />\r\n  <br />\r\n  <div class=\"text-align\">\r\n    <button routerLink=\"/dashboard\" type=\"button\" class=\"btn btn-info\">\r\n      Back to dashboard\r\n    </button>\r\n  </div>\r\n</div>\r\n<br />\r\n<br />\r\n"
 
 /***/ }),
 
@@ -18,7 +18,7 @@ module.exports = "<h3 class=\"text-align\">{{ (country$|async).Country }} {{ (co
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2RldGFpbHMvZGV0YWlsLmNvbXBvbmVudC5zY3NzIn0= */"
+module.exports = ".mb-3 {\n  margin-bottom: 3px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGV0YWlscy9EOlxcY292aWQtMTlcXE5ncngvc3JjXFxhcHBcXGRldGFpbHNcXGRldGFpbC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLG1CQUFrQixFQUNyQiIsImZpbGUiOiJzcmMvYXBwL2RldGFpbHMvZGV0YWlsLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1iLTN7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAzcHg7XHJcbn0iXX0= */"
 
 /***/ }),
 
@@ -41,6 +41,9 @@ __webpack_require__.r(__webpack_exports__);
 var DetailComponent = /** @class */ (function () {
     function DetailComponent(store) {
         this.store = store;
+        this.countryDataConfirmedList$ = this.store.select(function (state) { return state.dashboard.countryConfirmedData; });
+        this.countryDataRecoveredList$ = this.store.select(function (state) { return state.dashboard.countryRecoveredData; });
+        this.countryDataDeadList$ = this.store.select(function (state) { return state.dashboard.countryDeadData; });
     }
     DetailComponent.prototype.ngOnInit = function () {
         this.country$ = this.store.select(function (state) { return state.dashboard.countrySelected; });

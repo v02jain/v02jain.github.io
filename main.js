@@ -155,7 +155,7 @@ var AppModule = /** @class */ (function () {
 /*!********************************************************!*\
   !*** ./src/app/dashboard/actions/dashboard.actions.ts ***!
   \********************************************************/
-/*! exports provided: loadCountries, loadGlobal, selectedCountry, loadedCountryList, failLoadCountries, loadedGlobal, failLoadGlobal */
+/*! exports provided: loadCountries, loadGlobal, selectedCountry, loadedCountryList, failLoadCountries, loadedGlobal, failLoadGlobal, loadedCountryConfirmed, loadedCountryRecovered, loadedCountryDead, failLoadCountryData */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -167,6 +167,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "failLoadCountries", function() { return failLoadCountries; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadedGlobal", function() { return loadedGlobal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "failLoadGlobal", function() { return failLoadGlobal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadedCountryConfirmed", function() { return loadedCountryConfirmed; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadedCountryRecovered", function() { return loadedCountryRecovered; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadedCountryDead", function() { return loadedCountryDead; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "failLoadCountryData", function() { return failLoadCountryData; });
 /* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "./node_modules/@ngrx/store/fesm5/store.js");
 
 var loadCountries = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Dashboard] Load Countries');
@@ -176,6 +180,10 @@ var loadedCountryList = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createA
 var failLoadCountries = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Countries API] Countries Loaded Error');
 var loadedGlobal = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Global API] Global Loaded Success', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
 var failLoadGlobal = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Global API] Global Loaded Error');
+var loadedCountryConfirmed = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Countries Confirmed API] Countries Confirmed Cases Loaded', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+var loadedCountryRecovered = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Countries Recovered API] Countries Recovered Cases Loaded', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+var loadedCountryDead = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Countries Dead API] Countries Dead Cases Loaded', Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+var failLoadCountryData = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])('[Selected Country Data API] CountryData Loaded Error');
 
 
 /***/ }),
@@ -187,7 +195,7 @@ var failLoadGlobal = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createActi
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"summary\">\r\n  <div class=\"card text-white bg-primary mb-3\" style=\"max-width: 18rem;\">\r\n    <div class=\"card-header\">Total Cases</div>\r\n    <div class=\"card-body\">\r\n      <p class=\"card-text\">{{ (global$ | async)?.TotalConfirmed }}</p>\r\n    </div>\r\n  </div>\r\n  <div class=\"card text-white bg-danger mb-3\" style=\"max-width: 18rem;\">\r\n    <div class=\"card-header\">Total Deaths</div>\r\n    <div class=\"card-body\">\r\n      <p class=\"card-text\">{{ (global$ | async)?.TotalDeaths }}</p>\r\n    </div>\r\n  </div>\r\n  <div class=\"card text-white bg-success mb-3\" style=\"max-width: 18rem;\">\r\n    <div class=\"card-header\">Total Recovered</div>\r\n    <div class=\"card-body\">\r\n      <p class=\"card-text\">{{ (global$ | async)?.TotalRecovered }}</p>\r\n    </div>\r\n  </div>\r\n</div>\r\n<form class=\"container\" [formGroup]=\"countryForm\">\r\n  <select formControlName=\"country\" class=\"custom-select custom-select-lg mb-3\">\r\n    <option\r\n      *ngFor=\"let country of countryList$ | async\"\r\n      [ngValue]=\"country.CountryCode\"\r\n      >{{ country.Country }} ({{ country.CountryCode }})</option\r\n    >\r\n  </select>\r\n  \r\n</form>\r\n\r\n<div class=\"container\" *ngIf=\"countrySelected\">\r\n  <h3 class=\"text-align\">\r\n    {{ (countrySelected$ | async).Country }}-{{\r\n      (countrySelected$ | async).CountryCode\r\n    }}\r\n  </h3>\r\n\r\n  <div class=\"alert alert-primary\" role=\"alert\">\r\n    Total Cases - {{ (countrySelected$ | async)?.TotalConfirmed }}\r\n  </div>\r\n  <div class=\"alert alert-danger\" role=\"alert\">\r\n    Total Deaths - {{ (countrySelected$ | async)?.TotalDeaths }}\r\n  </div>\r\n  <div class=\"alert alert-success\" role=\"alert\">\r\n    Total Recovered - {{ (countrySelected$ | async)?.TotalRecovered }}\r\n  </div>\r\n  <div class=\"text-align\">\r\n    <button routerLink=\"/details\" type=\"button\" class=\"btn btn-info\">\r\n      Go to details\r\n    </button>\r\n  </div>\r\n</div>\r\n\r\n<!-- <h3 class=\"heading\">World Data</h3>\r\n<div class=\"world-map\"></div>\r\n<h3 class=\"heading\">Country Specific</h3>\r\n<div class=\"select\">\r\n  <select id=\"country\"></select>\r\n</div>\r\n<div class=\"country-chart\"></div> -->\r\n<!-- \r\n<br />\r\n<br />\r\n<br />\r\n<br /> -->\r\n<br />\r\n<p class=\"info text-align\">\r\n  The API used is available\r\n  <a\r\n    href=\"https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest\"\r\n    target=\"_blank\"\r\n    >here</a\r\n  >.\r\n</p>\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col\">\r\n     <div class=\"card text-white bg-primary mb-3\">\r\n       <div class=\"card-header\">Total Cases</div>\r\n       <div class=\"card-body\">\r\n         <p class=\"card-text\">{{ (global$ | async)?.TotalConfirmed }}</p>\r\n       </div>\r\n     </div>\r\n    </div>\r\n     <div class=\"col\">\r\n       <div class=\"card text-white bg-danger mb-3\">\r\n         <div class=\"card-header\">Total Deaths</div>\r\n         <div class=\"card-body\">\r\n           <p class=\"card-text\">{{ (global$ | async)?.TotalDeaths }}</p>\r\n         </div>\r\n       </div>\r\n     </div>\r\n   <div class=\"col\">\r\n     <div class=\"col card text-white bg-success mb-3\">\r\n       <div class=\"card-header\">Total Recovered</div>\r\n       <div class=\"card-body\">\r\n         <p class=\"card-text\">{{ (global$ | async)?.TotalRecovered }}</p>\r\n       </div>\r\n     </div>\r\n   </div>\r\n   </div>\r\n</div>\r\n\r\n\r\n<form class=\"container\" [formGroup]=\"countryForm\">\r\n  <select formControlName=\"country\" class=\"custom-select custom-select-lg mb-3\">\r\n    <option\r\n      *ngFor=\"let country of countryList$ | async\"\r\n      [ngValue]=\"country.CountryCode\"\r\n      >{{ country.Country }} ({{ country.CountryCode }})</option\r\n    >\r\n  </select>\r\n  \r\n</form>\r\n\r\n<div class=\"container\" *ngIf=\"countrySelected\">\r\n  <h3 class=\"text-align\">\r\n    {{ (countrySelectedData$ | async).Country }}-{{\r\n      (countrySelectedData$ | async).CountryCode\r\n    }}\r\n  </h3>\r\n\r\n  <div class=\"alert alert-primary\" role=\"alert\">\r\n    Total Cases - {{ (countrySelectedData$ | async)?.TotalConfirmed }}\r\n  </div>\r\n  <div class=\"alert alert-danger\" role=\"alert\">\r\n    Total Deaths - {{ (countrySelectedData$ | async)?.TotalDeaths }}\r\n  </div>\r\n  <div class=\"alert alert-success\" role=\"alert\">\r\n    Total Recovered - {{ (countrySelectedData$ | async)?.TotalRecovered }}\r\n  </div>\r\n  <div class=\"text-align\">\r\n    <button routerLink=\"/details\" type=\"button\" class=\"btn btn-info\">\r\n      Go to details\r\n    </button>\r\n  </div>\r\n</div>\r\n\r\n<!-- <h3 class=\"heading\">World Data</h3>\r\n<div class=\"world-map\"></div>\r\n<h3 class=\"heading\">Country Specific</h3>\r\n<div class=\"select\">\r\n  <select id=\"country\"></select>\r\n</div>\r\n<div class=\"country-chart\"></div> -->\r\n<!-- \r\n<br />\r\n<br />\r\n<br />\r\n<br /> -->\r\n<br />\r\n<p class=\"info text-align\">\r\n  The API used is available\r\n  <a\r\n    href=\"https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest\"\r\n    target=\"_blank\"\r\n    >here</a\r\n  >.\r\n</p>\r\n"
 
 /***/ }),
 
@@ -230,7 +238,7 @@ var DashboardComponent = /** @class */ (function () {
         this.store = store;
         this.global$ = this.store.select(function (state) { return state.dashboard.globaldetails; });
         this.countryList$ = this.store.select(function (state) { return state.dashboard.countryList; });
-        this.countrySelected$ = this.store.select(function (state) { return state.dashboard.countrySelected; });
+        this.countrySelectedData$ = this.store.select(function (state) { return state.dashboard.countrySelected; });
         this.countrySelected = false;
         this.countrySlectedCode = 'IN';
     }
@@ -246,7 +254,7 @@ var DashboardComponent = /** @class */ (function () {
                 _this.store.dispatch(Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_4__["loadCountries"])());
             }
         });
-        this.countrySelected$.subscribe(function (val) {
+        this.countrySelectedData$.subscribe(function (val) {
             if (val) {
                 _this.countrySelected = true;
                 _this.countrySlectedCode = val.CountryCode;
@@ -394,6 +402,27 @@ var DashboardEffects = /** @class */ (function () {
                 return _this.statsService.getGlobalDetail().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (details) { return Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["loadedGlobal"])({ globaldetails: details }); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function () { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["of"])(Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["failLoadGlobal"])()); }));
             }));
         });
+        this.getCountrySelectedConfirmedDetails$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["createEffect"])(function () {
+            return _this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["selectedCountry"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["mergeMap"])(function (action) {
+                return _this.statsService.getConfirmedByCountry(action.countrySelected.CountryCode).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (confirmed) {
+                    return Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["loadedCountryConfirmed"])({ confirmedList: confirmed });
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function () { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["of"])(Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["failLoadCountryData"])()); }));
+            }));
+        });
+        this.getCountrySelectedRecoveredDetails$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["createEffect"])(function () {
+            return _this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["selectedCountry"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["mergeMap"])(function (action) {
+                return _this.statsService.getRecoveredByCountry(action.countrySelected.CountryCode).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (recovered) {
+                    return Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["loadedCountryRecovered"])({ recoveredList: recovered });
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function () { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["of"])(Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["failLoadCountryData"])()); }));
+            }));
+        });
+        this.getCountrySelectedDeadDetails$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["createEffect"])(function () {
+            return _this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_3__["ofType"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["selectedCountry"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["mergeMap"])(function (action) {
+                return _this.statsService.getDeadByCountry(action.countrySelected.CountryCode).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (dead) {
+                    return Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["loadedCountryDead"])({ deadList: dead });
+                }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["catchError"])(function () { return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["of"])(Object(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_1__["failLoadCountryData"])()); }));
+            }));
+        });
     }
     DashboardEffects = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
@@ -428,9 +457,12 @@ var dashboardFeatureKey = "dashboard";
 var initialState = {
     countryList: null,
     countrySelected: null,
-    globaldetails: null
+    globaldetails: null,
+    countryConfirmedData: null,
+    countryRecoveredData: null,
+    countryDeadData: null
 };
-var dashboardReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createReducer"])(initialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedCountryList"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countryList: action.countryList })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["selectedCountry"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countrySelected: action.countrySelected })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedGlobal"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { globaldetails: action.globaldetails })); }));
+var dashboardReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["createReducer"])(initialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedCountryList"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countryList: action.countryList })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["selectedCountry"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countrySelected: action.countrySelected })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedGlobal"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { globaldetails: action.globaldetails })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedCountryConfirmed"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countryConfirmedData: action.confirmedList })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedCountryRecovered"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countryRecoveredData: action.recoveredList })); }), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["on"])(_actions_dashboard_actions__WEBPACK_IMPORTED_MODULE_2__["loadedCountryDead"], function (state, action) { return (tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, state, { countryDeadData: action.deadList })); }));
 function reducer(state, action) {
     return dashboardReducer(state, action);
 }
@@ -459,9 +491,8 @@ __webpack_require__.r(__webpack_exports__);
 var StatsService = /** @class */ (function () {
     function StatsService(http) {
         this.http = http;
-        this.configUrl = "https://api.covid19api.com/summary";
+        this.configUrl = 'https://api.covid19api.com/summary';
     }
-    //https://api.covid19api.com/country/south-africa/status/confirmed/live
     StatsService.prototype.getConfig = function () {
         return this.http.get(this.configUrl);
     };
@@ -486,9 +517,24 @@ var StatsService = /** @class */ (function () {
             });
         }));
     };
+    StatsService.prototype.getConfirmedByCountry = function (countryCode) {
+        return this.http.get('https://api.covid19api.com/country/' +
+            countryCode +
+            '/status/confirmed/live');
+    };
+    StatsService.prototype.getDeadByCountry = function (countryCode) {
+        return this.http.get('https://api.covid19api.com/country/' +
+            countryCode +
+            '/status/deaths/live');
+    };
+    StatsService.prototype.getRecoveredByCountry = function (countryCode) {
+        return this.http.get('https://api.covid19api.com/country/' +
+            countryCode +
+            '/status/recovered/live');
+    };
     StatsService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-            providedIn: "root",
+            providedIn: 'root',
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
     ], StatsService);
